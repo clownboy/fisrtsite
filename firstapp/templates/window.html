@@ -1,0 +1,218 @@
+<!DOCTYPE html> {% load staticfiles %}
+<html>
+
+<head>
+    <title>万物之光</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" media="screen" charset="utf-8">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" />
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+    <div id=app>
+        <div class="ui fixed inverted menu">
+            <div class="item">
+                <img class="ui small image " src="/static/images/light.png" alt="直面恐惧&#10成为你自己" />
+            </div>
+            <a {%if request.path == "/window"%} class="item active"{% else %}class="item "{% endif %}href="/window">首页</a>
+            <a {%if request.path == "/mynote"%} class="item active"{% else %}class="item "{% endif %} href="/mynote">我的笔记</a>
+            <a {%if request.path == "/mypaper"%} class="item active"{% else %}class="item "{% endif %} href="/mypaper">碎片</a>
+            <div class="search">
+              <form method="get" action="/search" id="search">
+                <div class="ui mini icon input">
+                    <input  type="text" name="bookname"placeholder="搜索书籍..." required="不能为空">
+                    <i class="inverted circular search link icon" onclick="document.getElementById('search').submit();return false;"></i>
+                </div>
+                </form>
+            </div>
+            <div class="out">
+                <label style="color:#E0E0E0;margin-right:20px;">{{request.user.username}}</label>
+                <i><a href="http://127.0.0.1:8000/userlogout"  class=" ui mini active grey basic button ">退出</a></i>
+            </div>
+        </div>
+
+        <div class="artical">
+            <el-dialog :visible.sync="dialogVisible" width="400px">
+                <div style="margin-bottom:10px;">
+                    书名：<input type="text" v-model="artical.bookname"></div>
+                <div style="margin-bottom:10px;">
+                    作者：<input type="text" v-model="artical.author">&emsp;第<input type='tel' @input="handleInput($event)" v-model="artical.page" style="width:40px;">页
+                </div>
+                <div style="margin-bottom:10px;">
+                    <label>笔记</label>：<textarea type="text" v-model="artical.content"></textarea>
+                </div>
+                <div style="margin-left:140px;">
+                    <button class=" ui mini active grey basic button " v-on:click="onNote()" v-if="!noteloading">确定</button>
+                    <button class=" ui mini loading grey basic button " v-if="noteloading">确定</button>
+                </div>
+            </el-dialog>
+
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    {%if not articals and not papers %}
+                    <div class="card">
+                        <div class=" ui stacked padded segment">
+                            <img src="/static/images/ed.jpg" />
+                            <p>暂时没有内容哦</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% for paper in papers %}
+                    <div class="card">
+                        <div class=" ui stacked padded segment">
+                            <div id="comment{{paper.artical.id}}" class="ui right attached rail" style="margin-left:10px" v-if="commentpage=={{paper.artical.id}}">
+                                <div class=" ui raised   segment">
+                                  {% verbatim %}
+                                  <div v-for="comment in comments" style="margin-bottom:8px;"><img :title="comment.talker" class="ui avatar image" :src="comment.talkerhead">{{comment.talk}}&nbsp<span style="font-size:50%;">({{comment.talktime|formatDate}})</span>
+                                  </div>
+                                  {% endverbatim %}
+                                    <el-input type="textarea" autosize  placeholder="输入评论" v-model="commenttext">
+                                    </el-input>
+                                  <a style="color:black;cursor:pointer;" v-on:click="closecomment()"><i title="关闭" class="close icon active"></i></a>
+                                  &nbsp&nbsp<a style="color:black;cursor:pointer;" v-on:click="talk()" v-if="commenttext"><i title="评论" class="pencil alternate icon active"></i></a>
+                                </div>
+                            </div>
+                            <a style="color:black;cursor:pointer;" v-on:click="comment({{paper.artical.id}})"><i class="comment alternate outline icon"style="float:right;"title="评论"></i></a>
+                            <p class="author"><b p id="bookname{{artical.id}}">《{{paper.artical.bookname}}》</b>---<span id="author{{paper.artical.id}}">{{paper.artical.author}}</span></p>
+                            <p id="content{{paper.artical.id}}">{{paper.artical.content}}</p>
+                            <span id="page{{paper.artical.id}}">第{{paper.artical.pagenumber}}页</span>
+                            <span>&nbsp&nbsp{{paper.artical.notetime|date:"Y-m-d H:i:s"}}</span>
+                            <div class="ui  noterinfo"><img title="{{paper.artical.noteinfo.nickname}}" class="ui avatar image" src="{{paper.artical.noteinfo.headlogo}}"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% for artical in articals %}
+                    <div class="card">
+                        <div class=" ui stacked padded segment">
+                            <div id="comment{{artical.id}}" class="ui right  attached rail" style="margin-left:10px" v-if="commentpage=={{artical.id}}">
+                                <div class=" ui raised   segment">
+                                  {% verbatim %}
+                                  <div v-for="comment in comments" style="margin-bottom:8px;"><img :title="comment.talker" class="ui avatar image" :src="comment.talkerhead">{{comment.talk}}&nbsp<span style="font-size:50%;">({{comment.talktime|formatDate}})</span>
+                                  </div>
+                                  {% endverbatim %}
+                                    <el-input type="textarea" autosize  placeholder="输入评论" v-model="commenttext">
+                                    </el-input>
+                                  <a style="color:black;cursor:pointer;" v-on:click="closecomment()"><i title="关闭" class="close icon active"></i></a>
+                                  &nbsp&nbsp<a style="color:black;cursor:pointer;" v-on:click="talk()" v-if="commenttext"><i title="评论" class="pencil alternate icon active"></i></a>
+                                </div>
+                            </div>
+                            <a style="color:black;cursor:pointer;" v-on:click="comment({{artical.id}})"><i class="comment alternate outline icon"style="float:right;"title="评论"></i></a>
+                            {%if num_pages %}
+                            <a style="color:black;cursor:pointer;" v-on:click="editnote({{artical.id}})"><i class=" edit outline icon"style="float:right;"title="编辑"></i></a>
+                            <a style="color:black;cursor:pointer;" v-on:click="deletenote({{artical.id}})"><i class="trash alternate outline icon"style="float:right;"title="删除"></i></a>
+                             {% endif %}
+                            <p class="author"><b p id="bookname{{artical.id}}">《{{artical.bookname}}》</b>---<span id="author{{artical.id}}">{{artical.author}}</span></p>
+                            <p id="content{{artical.id}}">{{ artical.content}}</p>
+                            <span id="page{{artical.id}}">第{{artical.pagenumber}}页</span>
+                            <span>&nbsp&nbsp{{ artical.notetime|date:"Y-m-d H:i:s"}}</span>
+                             {% if not num_pages %}
+                            <div class="ui  noterinfo"><img title="{{artical.noteinfo.nickname}}" class="ui avatar image" src="{{artical.noteinfo.headlogo}}"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                     {%if num_pages > 1 %}
+                    <a class="ui mini compact menu " style="margin-top:20px;margin-bottom:100px;">
+                        <div class="ui simple dropdown item">第{{articals.number}}页 <i class="dropdown icon"></i>
+                            <div class="menu">
+                                {%for i in countpage%}
+                                <div class="item" v-on:click="gonumpage({{i}})">第{{ i }}页
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="five wide column">
+                    <div class="copypage" v-if="copypage.show">
+                        <div class="ui raised  segment" method="post" action="/onnote">
+                            <a class="ui black right ribbon label" v-on:click="noteCopy()"> <i class="close icon"></i>
+                            </a>
+                            <div style="margin-bottom:10px;">
+                                可以将其他地方的读书笔记搬运至本站整合<br/>目前仅提供豆瓣读书笔记的搬运
+                            </div>
+                            <div style="margin-bottom:10px;">
+                                输入豆瓣账号（数字+字母）<input id="dbid" v-model="doubanID" type="text" style="color:#000000"></input>
+                            </div>
+                            <div style="margin-bottom:10px;" v-text="notenumber" v-if="shownumber.show">搬运笔记数量：{{notenumber}}</div>
+                            <button class=" ui mini grey basic button " style="width:60px;margin-left:140px;" v-on:click="IDclean()" v-if="!loading.show">确定</button>
+                            <button class=" ui mini loading grey basic button " style="width:60px;margin-left:140px;" v-if="loading.show">确定</button>
+                        </div>
+                    </div>
+
+                    <div class="account" v-if="account.show">
+                        <div class="ui raised  segment">
+                            <a class="ui black right ribbon label" v-on:click="setting()"> <i class="close icon"></i>
+                            </a>
+                            {% if not request.user.email%}
+                            <div style="margin-bottom:10px;">
+                                邮箱绑定（可用于找回密码）
+                            </div>
+                            <div style="margin-bottom:10px;">
+                                输入邮箱：<input id="email" v-model="email" name="email" type="email" style="color:#000000"></input>
+                            </div>
+                            <button class=" ui mini grey basic button " style="width:100px;margin-left:120px;margin-bottom:10px;" @click='emailSet'>确认绑定</button>
+                            {%else%}
+                            <div style="margin-bottom:10px;">
+                                邮箱已绑定：{{request.user.email}}
+                            </div>
+                             {%endif%}
+                            <div style="margin-bottom:10px;">
+                                修改密码：<input id="repassword" v-model="repassword" type="password" style="color:#000000;margin-bottom:10px;"></input>
+                                </div>
+                            <button class=" ui mini grey basic button " style="width:90px;margin-left:120px;" v-if="repassword" @click='passwordSet'>确认修改</button>
+                        </div>
+                    </div>
+
+                    <div class="headlogo" v-if="headpage.show">
+                        <form class="ui raised  segment" method="post" action="/headupload" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <a class="ui black right ribbon label" v-on:click="headlogo()"> <i class="close icon"></i></a>
+                            <div style="margin-bottom:10px;">
+                                上传的图片会进行压缩，请不要传太大的图片</br>160*160效果最佳</div>
+                            <div style="margin-bottom:10px;">
+                                <label>上传头像</label>
+                                <input type="file" class="form-control-file" name="headlogo" accept="image/jpg,image/jpeg,image/png">
+                            </div>
+                            <button class=" ui mini  grey basic button " style="width:60px;margin-left:140px;" type="submit">确定</button>
+                        </form>
+                    </div>
+                    {%if articals.has_previous %}
+                    <div class="pagenumerchange1">
+                        <a title="上一页" href="?page={{articals.previous_page_number}}" class="mini ui circular  icon  button"><i class=" chevron up icon" ></i></a>
+                    </div>
+                    {%endif%} {%if articals.has_next %}
+                    <div class="pagenumerchange2">
+                        <a title="下一页" href="?page={{articals.next_page_number}}" class="mini ui circular  icon button"><i class=" chevron down icon"></i></a>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+        <div class="ui right fixed vertical menu inverted">
+            <div class="ui profile divider"></div>
+            <img title="上传自定义头像" class="ui small centered  circular image" v-on:click="headlogo()" style='cursor:pointer;' src="{{user.headlogo}}">
+            <div class="ui inverted  segment">
+                <a class="name" v-if='flag' style="color:white;" v-on:click="editnickname()">{{user.nickname}}</a>
+                <input class="edit" type="text" style="color:black;width:130px;" v-if='!flag' placeholder="{{user.nickname}}" v-model="nickname">
+                <i title="设置昵称" class="pencil alternate icon active " v-if='flag' v-on:click="editnickname()"></i>
+                <i class="check icon active " style='cursor:pointer;' v-if='!flag' v-on:click="changename()"></i>
+                <i class="close icon active " style='cursor:pointer;' v-if='!flag' v-on:click="outchange()"></i>
+            </div>
+            <a class="item" v-on:click="editnote()">写笔记</a>
+            <a class="item" v-on:click="noteCopy()">笔记搬运</a>
+            <a class="item" v-on:click="setting()">个人设置</a>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'window.js' %}"></script>
+</body>
+</html>

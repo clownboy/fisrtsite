@@ -1,0 +1,184 @@
+<!DOCTYPE html> {% load staticfiles %}
+<html>
+
+<head>
+    <title>首页</title>
+    <script src="https://cdn.bootcss.com/reqwest/2.0.5/reqwest.js"></script>
+    <script src="../static/vue.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}" media="screen" charset="utf-8">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}"/>
+</head>
+<body>
+    <style type="text/css">
+        <!-- body {
+            background-color: #696969;
+        }
+        p.author {
+            margin-bottom: 10px;
+        }
+        div.card {
+            margin-top: 20px;
+            width: 80%;
+        }
+        div.artical {
+            position: relative;
+            margin-top: 40px;
+            margin-left: 100px;
+        }
+        input {
+            outline-style: none;
+            border-radius: 2px;
+            box-shadow: none;
+            border: 1px solid #DBDBDB;
+        }
+        input:focus {
+            background-color: #696969;
+        }
+    </style>
+    <div id="app">
+        <div class="ui fixed inverted menu">
+            <div class="item">
+                <img class="ui small image " src="/static/images/light.png" alt="直面恐惧&#10成为你自己" />
+            </div>
+            <a class="item">首页</a>
+        </div>
+
+        <div class="artical">
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    {%if not articals%}
+                    <div class="card">
+                        <div class=" ui stacked padded segment">
+                            <img src="/static/images/ed.jpg" />
+                            <p>暂时没有内容哦</p>
+                        </div>
+                    </div>
+                    {% endif %} {% for artical in articals %}
+                    <div class="card">
+                        <div class=" ui stacked padded segment">
+                            <p class="author"><b>《{{ artical.bookname }}》</b>---{{ artical.author }}</p>
+                            <p>{{ artical.content}}</p>
+                            <span>第{{ artical.pagenumber }}页</span>
+                            <span>&nbsp&nbsp{{ artical.notetime|date:"Y-m-d H:i:s"}}</span>
+                            <div class="ui  noterinfo" style="float:right;"><img title="{{artical.noteinfo.nickname}}" class="ui avatar image" src="{{artical.noteinfo.headlogo}}"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="ui right fixed vertical menu inverted ">
+            <ul class="tab-tilte">
+                <button v-on:click="log()" v-if="regpage.show" class=" ui active grey mini basic button" style="margin-left:15px;width:100px;">返回登录</button>
+                <button v-on:click="reg()" v-if="logpage.show" class=" ui active grey mini basic button" style="margin-left:15px;width:100px;">我要注册</button>
+            </ul>
+            <div class="tab-content" style="margin:15px">
+                <div v-if="logpage.show">
+                    <div class="field">
+                        <label style="color: #E0E0E0;">用户名：</label>
+                        <input style="margin-bottom:10px;"type="text" v-model="form.username" style="color:#000000"></input><br>
+                        <label style="color: #E0E0E0;">密码：</label>
+                        <input style="margin-bottom:10px;"type="password" v-model="form.password" style="color:black"></input><br>
+                        <button v-on:click="onlogin()" class=" ui active grey basic mini button" style="margin-left:40px;width:100px;">登  录</button>
+                    </div>
+                </div>
+                <div v-if="regpage.show">
+                    <label style="color: #E0E0E0;">新用户名：</label>
+                    <input style="margin-bottom:10px;"v-model="form.username" type="text" style="color:#000000"></input><br>
+                    <label style="color: #E0E0E0;">密码：</label>
+                    <input style="margin-bottom:10px;"v-model="form.password" type="password" style="color:#000000"></input><br>
+                    <label style="color: #E0E0E0;">确认密码：</label>
+                    <input  style="margin-bottom:10px;" v-model="form.repassword" type="password" style="color:#000000"></input><br>
+                    <button v-on:click="onSubmit()" class=" ui active grey basic mini button" style="margin-left:40px;width:100px;">提交注册</button>
+                </div>
+                <label v-text="errormsg" style="color:red"> {{errormsg}} </label>
+            </div>
+            <div class="ui padded segment inverted"style="color:#E0E0E0">
+            <div> 1，本站为个人读书笔记应用，专为纸质书阅读者提供笔记管理服务，记录形式均为纯文本，图片信息可使用配套小程序进行编辑转换。</div><br>
+            <div> 2，本站为非盈利非商业性质，禁止散播与本站主旨无关信息。</div><br>
+            <div> 3，根据服务器因素本站将不定期关闭注册。</div>
+            </div>
+        </div>
+  <script>
+    var vm = new Vue({
+        el: "#app",
+        data:{
+            errormsg:'',
+            form:{
+              username:'',
+              password:'',
+              repassword:'',
+            },
+            regpage:{
+              show:false,
+            },
+            logpage:{
+              show:true, //默认选中第一个tab
+            }
+        },
+        methods:{
+          getCookie (name) {
+      var value = '; ' + document.cookie
+      var parts = value.split('; ' + name + '=')
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    },
+          onSubmit(){
+            this.errormsg=''
+            var formData = new FormData()
+            url='http://127.0.0.1:8000/register'
+            formData.append("username",this.form.username)
+            formData.append("password",this.form.password)
+            formData.append("repassword",this.form.repassword)
+            this.$http.post(url,formData,{headers: {'X-CSRFToken': this.getCookie('csrftoken')}})
+            .then(function(data){
+              obj=data.body.resp
+            if( obj == 'success'){
+              console.log(obj)
+              alert('注册成功，自动登录');
+              window.location.href="http://127.0.0.1:8000/window"
+            }
+            else if (obj.hasOwnProperty('username')){
+              this.errormsg=obj.username[0];
+            }
+            else if (obj.hasOwnProperty('password')){
+              this.errormsg=obj.password[0];
+            }
+            else if (obj.hasOwnProperty('repassword')){
+              this.errormsg=obj.repassword[0] ;
+            }
+
+            })
+          },
+          onlogin(){
+            var formData = new FormData()
+            url='http://127.0.0.1:8000/userlogin'
+            formData.append("username",this.form.username)
+            formData.append("password",this.form.password)
+            this.$http.post(url,formData,{headers: {'X-CSRFToken': this.getCookie('csrftoken')}})
+            .then(function(data){
+              obj=data.body.resp
+            if( obj == 'success'){
+              console.log(obj)
+              window.location.href="http://127.0.0.1:8000/window"
+            }
+            else{
+              this.errormsg = "用户名或密码错误"
+              }
+            })
+          },
+          log:function(){
+            this.regpage.show = false
+            this.logpage.show = true
+          },
+          reg:function(){
+            this.regpage.show = true
+            this.logpage.show = false
+
+
+          }
+        }
+    })
+</script>
+</body>
+</html>

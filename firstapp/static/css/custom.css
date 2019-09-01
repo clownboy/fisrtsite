@@ -1,0 +1,95 @@
+<!-- body {
+    background-color: #696969;
+}
+p.author {
+    margin-bottom: 10px
+}
+
+div.card {
+    margin-top: 20px;
+    width: 80%;
+}
+
+div.search {
+    position: absolute;
+    right: 210px;
+    margin-top: 10px
+}
+
+div.artical {
+    position: relative;
+    margin-top: 40px;
+    margin-left: 100px;
+}
+
+div.out {
+    position: absolute;
+    right: 10px;
+    margin-top: 10px;
+}
+
+.ui.right.fixed.vertical.menu.inverted {
+    margin-top: 50px;
+}
+
+.ui.profile.divider {
+    margin-top: 0px;
+}
+
+div.headlogo {
+    position: absolute;
+    position: fixed;
+    right: 222px;
+}
+
+div.notepage {
+    position: absolute;
+    position: fixed;
+    right: 222px;
+    margin-top: 237px;
+}
+
+div.copypage {
+    position: absolute;
+    position: fixed;
+    right: 222px;
+    margin-top: 277px;
+}
+
+div.account {
+    position: absolute;
+    position: fixed;
+    right: 222px;
+    margin-top: 357px;
+}
+
+div.pagenumerchange1 {
+    position: absolute;
+    position: fixed;
+    right: 222px;
+    margin-top: 500px;
+}
+
+div.pagenumerchange2 {
+    position: absolute;
+    position: fixed;
+    right: 222px;
+    margin-top: 600px;
+}
+.ui.noterinfo {
+    position: relative;
+    float: right;
+    border: 5px;
+}
+input {
+    border-radius: 2px;
+    border: 1px solid #DBDBDB;
+}
+textarea {
+    vertical-align: top;
+    border-radius: 2px;
+    border: 1px solid #DBDBDB;
+    width: 300px;
+    height: 240px;
+    resize: none;
+}
