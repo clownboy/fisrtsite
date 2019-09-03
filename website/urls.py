@@ -1,4 +1,4 @@
-"""fisrtsite URL Configuration
+"""website URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -44,5 +44,5 @@ urlpatterns = [
     re_path(r'^deletenote', deletenote,name='deletenote'),
     path('account', account,name='account'),
     path('favicon.ico', serve, {'path': 'images/favicon.ico'}),
-    path('api/v1/', include('fisrtsite.version_1')),
+    path('api/v1/', include('website.version_1')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
