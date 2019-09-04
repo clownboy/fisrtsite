@@ -3,8 +3,7 @@
 
 <head>
     <title>首页</title>
-    <script src="https://cdn.bootcss.com/reqwest/2.0.5/reqwest.js"></script>
-    <script src="../static/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/semantic.css' %}" media="screen" charset="utf-8">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}"/>
@@ -126,7 +125,7 @@
           onSubmit(){
             this.errormsg=''
             var formData = new FormData()
-            url='http://127.0.0.1:8000/register'
+            url='http://49.235.231.49/register'
             formData.append("username",this.form.username)
             formData.append("password",this.form.password)
             formData.append("repassword",this.form.repassword)
@@ -136,7 +135,7 @@
             if( obj == 'success'){
               console.log(obj)
               alert('注册成功，自动登录');
-              window.location.href="http://127.0.0.1:8000/window"
+              window.location.href="http://49.235.231.49/window"
             }
             else if (obj.hasOwnProperty('username')){
               this.errormsg=obj.username[0];
@@ -152,7 +151,7 @@
           },
           onlogin(){
             var formData = new FormData()
-            url='http://127.0.0.1:8000/userlogin'
+            url='http://49.235.231.49/userlogin'
             formData.append("username",this.form.username)
             formData.append("password",this.form.password)
             this.$http.post(url,formData,{headers: {'X-CSRFToken': this.getCookie('csrftoken')}})
@@ -160,7 +159,7 @@
               obj=data.body.resp
             if( obj == 'success'){
               console.log(obj)
-              window.location.href="http://127.0.0.1:8000/window"
+              window.location.href="http://49.235.231.49/window"
             }
             else{
               this.errormsg = "用户名或密码错误"
