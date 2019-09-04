@@ -117,11 +117,6 @@
             }
         },
         methods:{
-          getCookie (name) {
-      var value = '; ' + document.cookie
-      var parts = value.split('; ' + name + '=')
-      if (parts.length === 2) return parts.pop().split(';').shift()
-    },
           onSubmit(){
             this.errormsg=''
             var formData = new FormData()
@@ -129,7 +124,7 @@
             formData.append("username",this.form.username)
             formData.append("password",this.form.password)
             formData.append("repassword",this.form.repassword)
-            this.$http.post(url,formData,{headers: {'X-CSRFToken': this.getCookie('csrftoken')}})
+            this.$http.post(url,formData)
             .then(function(data){
               obj=data.body.resp
             if( obj == 'success'){
@@ -154,7 +149,7 @@
             url='http://49.235.231.49/userlogin'
             formData.append("username",this.form.username)
             formData.append("password",this.form.password)
-            this.$http.post(url,formData,{headers: {'X-CSRFToken': this.getCookie('csrftoken')}})
+            this.$http.post(url,formData)
             .then(function(data){
               obj=data.body.resp
             if( obj == 'success'){

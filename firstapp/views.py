@@ -14,6 +14,7 @@ import datetime
 from PIL import Image
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 def passwordset(request):
     password = request.POST.get('repassword')
@@ -118,14 +119,13 @@ def mypaper(request):
 
 def index(request):
     if request.method =='GET':
-        form = RegisterForm()
         articals={}
         today = datetime.datetime.utcnow().replace(tzinfo=utc).date()
         now = datetime.datetime.utcnow().replace(tzinfo=utc)
         if Artical.objects.filter(notetime__gt=today):
            articals=Artical.objects.filter(notetime__gt=today).order_by("-notetime")
-           return render(request, 'index.html', {'form':form,'articals':articals})
-        return render(request, 'index.html', {'form':form,'articals':articals})
+           return render(request, 'index.html', {'articals':articals})
+        return render(request, 'index.html')
 
 @login_required
 def window(request):
@@ -171,6 +171,7 @@ def onnote(request):
             resp=form.errors
             print(resp)
             return JsonResponse({'resp':resp})
+@csrf_exempt            
 def register(request):
     if request.method =='POST':
         form = RegisterForm(request.POST)
@@ -188,7 +189,7 @@ def register(request):
             resp=form.errors
             print(resp)
             return JsonResponse({'resp':resp})
-
+@csrf_exempt
 def userlogin(request):
     if request.method =='POST':
         form = AuthenticationForm(data=request.POST)
