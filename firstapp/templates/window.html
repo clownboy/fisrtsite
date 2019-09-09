@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <link rel="stylesheet" href="{% static 'css/semantic.css' %}" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" media="screen" charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}" media="screen" charset="utf-8">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" />
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -30,7 +30,7 @@
             </div>
             <div class="out">
                 <label style="color:#E0E0E0;margin-right:20px;">{{request.user.username}}</label>
-                <i><a href="http://127.0.0.1:8000/userlogout"  class=" ui mini active grey basic button ">退出</a></i>
+                <i><a href="http://localhost:8000/userlogout"  class=" ui mini active grey basic button ">退出</a></i>
             </div>
         </div>
 
