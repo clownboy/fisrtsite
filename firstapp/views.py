@@ -155,7 +155,7 @@ def onnote(request):
                 else: notetime = form.cleaned_data.get("notetime")
                 new_note = Artical.objects.create(bookname=bookname,author=author,pagenumber=pagenumber,content=content,notetime=notetime,noter_id=noter,noteinfo_id=noter)
                 new_note.save()
-                return redirect('http://127.0.0.1:8000/mynote?page=1')
+                return redirect('/mynote?page=1')
             else:
                 resp=form.errors
                 print(resp)
@@ -166,7 +166,7 @@ def onnote(request):
             pagenumber = form.cleaned_data.get("pagenumber")
             content = form.cleaned_data.get("content")
             Artical.objects.filter(id=noteid).update(bookname=bookname,author=author,pagenumber=pagenumber,content=content)
-            return redirect('http://127.0.0.1:8000/mynote?page=1')
+            return redirect('/mynote?page=1')
         else:
             resp=form.errors
             print(resp)
