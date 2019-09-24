@@ -58,7 +58,7 @@ var vm = new Vue({
     methods: {
         emailSet(){
           if(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(this.email)){
-          url = 'http://49.235.231.49/emailset'
+          url = 'https://brokenstory.club/emailset'
           var formData = new FormData()
           formData.append("email", this.email)
           this.$http.post(url, formData, {
@@ -81,7 +81,7 @@ var vm = new Vue({
           if(srt(password).length < 6 ){
               alert('密码必须大于6位')
             }else{
-              url = 'http://49.235.231.49/passwordset'
+              url = 'https://brokenstory.club/passwordset'
               var formData = new FormData()
               formData.append("repassword", password)
               this.$http.post(url, formData, {
@@ -90,14 +90,14 @@ var vm = new Vue({
                   }
               }).then(function(res){
                    alert('密码修改成功,需重新登陆');
-                   window.location.href = "http://49.235.231.49/"
+                   window.location.href = "https://brokenstory.club"
                  },function(){
                    alert('密码修改失败')
                  })
            }
         },
         talk(){
-          url = 'http://49.235.231.49/comment'
+          url = 'https://brokenstory.club/comment'
           var formData = new FormData()
           formData.append("talk", this.commenttext)
           formData.append("artical", this.commentpage)
@@ -119,7 +119,7 @@ var vm = new Vue({
         },
         comment(id) {
                 this.commentpage = id;
-                url = 'http://49.235.231.49/api/getcomment'
+                url = 'https://brokenstory.club/api/getcomment'
                 this.$http.get(url, {
                     params: {id}
                 }).then(function(res) {
@@ -137,18 +137,15 @@ var vm = new Vue({
         deletenote(noteid) {
             var r = confirm("是否确定删除？")
             if (r == true) {
-                url = 'http://49.235.231.49/deletenote'
+                url = 'https://brokenstory.club/deletenote'
                 this.$http.post(url, noteid, {
                     headers: {
                         'X-CSRFToken': this.getCookie('csrftoken')
                     }
                 }).then(function(res) {
                     if (res.ok) {
-<<<<<<< HEAD
-                        window.reload()
-=======
                         window.location.reload()
->>>>>>> d23b1ded1dd42c295a1a3b2f347fba1d181a212a
+
                     } else {
                         console.log("not ok")
                     }
@@ -161,7 +158,7 @@ var vm = new Vue({
             this.noteloading = true;
             if (this.artical.bookname && this.artical.content) {
                 var formData = new FormData()
-                url = 'http://49.235.231.49/onnote'
+                url = 'https://brokenstory.club/onnote'
                 if (this.artical.noteid) {
                     formData.append("id", this.artical.noteid)
                 }
@@ -206,14 +203,14 @@ var vm = new Vue({
             }
         },
         gonumpage(x) {
-            window.location.href = "http://49.235.231.49/mynote" + "?page=" + x
+            window.location.href = "https://brokenstory.club/mynote" + "?page=" + x
         },
         outchange() {            
             this.flag = true;
         },
         changename() {
             var formData = new FormData()
-            url = 'http://49.235.231.49/account'
+            url = 'https://brokenstory.club/account'
             formData.append("nickname", this.nickname)
             this.$http.post(url, formData, {
                 headers: {
@@ -266,7 +263,7 @@ var vm = new Vue({
                         this.noteList(getData[i].book.title, getData[i].book.author, getData[i].content, getData[i].page_no, getData[i].time)
                     }
                     alert('搬运完成，一共' + res.body.total + '条笔记');
-                    window.location.href = "http://49.235.231.49/mynote?page=1"
+                    window.location.href = "https://brokenstory.club/mynote?page=1"
                     this.loading.show = false;
                 }
             }, function() {
@@ -295,7 +292,7 @@ var vm = new Vue({
         noteList(bookname, author, content, pagenumber, notetime) {
             var cont = this.contclean(content)
             var formData = new FormData()
-            url = 'http://49.235.231.49/onnote'
+            url = 'https://brokenstory.club/onnote'
             formData.append("bookname", bookname)
             formData.append("author", author)
             formData.append("content", cont)
@@ -311,7 +308,7 @@ var vm = new Vue({
                     alert('信息有误');
                 } else {
                     console.log("ok")
-                    window.location.href = "http://49.235.231.49/mynote?page=1"
+                    window.location.href = "https://brokenstory.club/mynote?page=1"
                 }
             })
         },

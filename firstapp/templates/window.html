@@ -35,7 +35,7 @@
             </div>
             <div class="out">
                 <label style="color:#E0E0E0;margin-right:20px;">{{request.user.username}}</label>
-                <i><a href="http://localhost:8000/userlogout"  class=" ui mini active grey basic button ">退出</a></i>
+                <i><a href="https://brokenstory.club/userlogout"  class=" ui mini active grey basic button ">退出</a></i>
             </div>
         </div>
 
@@ -137,13 +137,9 @@
                     {% endif %}
                 </div>
 
-<<<<<<< HEAD
-                <div class="five wide column" >
-                    <div class="copypage" v-if="copypage.show">
-=======
+
                 <div class="five wide column">
                     <div class="copypage" v-if="copypage.show" v-cloak>
->>>>>>> d23b1ded1dd42c295a1a3b2f347fba1d181a212a
                         <div class="ui raised  segment" method="post" action="/onnote">
                             <a class="ui black right ribbon label" v-on:click="noteCopy()"> <i class="close icon"></i>
                             </a>
