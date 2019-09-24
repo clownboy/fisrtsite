@@ -11,8 +11,13 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}" />
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
+<style type="text/css">
+[v-cloak]{
+    display: none;
+}
+</style>
 <body>
-    <div id=app>
+    <div id=app v-cloak>
         <div class="ui fixed inverted menu">
             <div class="item">
                 <img class="ui small image " src="/static/images/light.png" alt="直面恐惧&#10成为你自己" />
@@ -35,7 +40,7 @@
         </div>
 
         <div class="artical">
-            <el-dialog :visible.sync="dialogVisible" width="400px">
+            <el-dialog :visible.sync="dialogVisible" width="400px" v-cloak>
                 <div style="margin-bottom:10px;">
                     书名：<input type="text" v-model="artical.bookname"></div>
                 <div style="margin-bottom:10px;">
@@ -132,8 +137,13 @@
                     {% endif %}
                 </div>
 
+<<<<<<< HEAD
                 <div class="five wide column" >
                     <div class="copypage" v-if="copypage.show">
+=======
+                <div class="five wide column">
+                    <div class="copypage" v-if="copypage.show" v-cloak>
+>>>>>>> d23b1ded1dd42c295a1a3b2f347fba1d181a212a
                         <div class="ui raised  segment" method="post" action="/onnote">
                             <a class="ui black right ribbon label" v-on:click="noteCopy()"> <i class="close icon"></i>
                             </a>
@@ -149,7 +159,7 @@
                         </div>
                     </div>
 
-                    <div class="account" v-if="account.show">
+                    <div class="account" v-if="account.show" v-cloak>
                         <div class="ui raised  segment">
                             <a class="ui black right ribbon label" v-on:click="setting()"> <i class="close icon"></i>
                             </a>
@@ -173,7 +183,7 @@
                         </div>
                     </div>
 
-                    <div class="headlogo" v-if="headpage.show">
+                    <div class="headlogo" v-if="headpage.show" v-cloak>
                         <form class="ui raised  segment" method="post" action="/headupload" enctype="multipart/form-data">
                             {% csrf_token %}
                             <a class="ui black right ribbon label" v-on:click="headlogo()"> <i class="close icon"></i></a>

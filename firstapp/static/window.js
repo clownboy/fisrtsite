@@ -107,7 +107,7 @@ var vm = new Vue({
               }
           }).then(function(res) {
               if (res.ok) {
-                  window.location.href = "http://49.235.231.49/window"
+                  window.location.reload()
               } else {
                   console.log("not ok")
               }
@@ -144,7 +144,11 @@ var vm = new Vue({
                     }
                 }).then(function(res) {
                     if (res.ok) {
+<<<<<<< HEAD
                         window.reload()
+=======
+                        window.location.reload()
+>>>>>>> d23b1ded1dd42c295a1a3b2f347fba1d181a212a
                     } else {
                         console.log("not ok")
                     }
@@ -175,7 +179,7 @@ var vm = new Vue({
                         alert('信息有误');
                     } else {
                         console.log("ok")
-                        window.location.href = "http://49.235.231.49/mynote?page=1"
+                        window.location.reload()
                     }
                 })
             } else {

@@ -93,3 +93,7 @@ textarea {
     height: 240px;
     resize: none;
 }
+[v-cloak]{
+    display: none !important;
+}
+

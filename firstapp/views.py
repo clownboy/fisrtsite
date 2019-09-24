@@ -160,9 +160,9 @@ def onnote(request):
                    notetime = datetime.datetime.utcnow().replace(tzinfo=utc)
                 else:
                    notetime = form.cleaned_data.get("notetime")
-                   new_note = Artical.objects.create(bookname=bookname,author=author,pagenumber=pagenumber,content=content,notetime=notetime,noter_id=noter,noteinfo_id=noter)
-                   new_note.save()
-                   return redirect('/mynote?page=1')
+                new_note = Artical.objects.create(bookname=bookname,author=author,pagenumber=pagenumber,content=content,notetime=notetime,noter_id=noter,noteinfo_id=noter)
+                new_note.save()
+                return redirect('/mynote?page=1')
             else:
                 resp=form.errors
                 print(resp)
