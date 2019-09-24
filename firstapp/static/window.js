@@ -144,7 +144,7 @@ var vm = new Vue({
                     }
                 }).then(function(res) {
                     if (res.ok) {
-                        window.location.href = "http://49.235.231.49/mynote" + "?page=1"
+                        window.reload()
                     } else {
                         console.log("not ok")
                     }

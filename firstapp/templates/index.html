@@ -2,11 +2,13 @@
 <html>
 
 <head>
-    <title>首页</title>
+    <title>万物之光-个人阅读笔记</title>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" media="screen" charset="utf-8">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico'%}"/>
+    <meta name="keywords" content= "阅读|分享|摘录|笔记|纸质书">
+    <meta name="description" content= "阅读|分享|摘录|笔记|纸质书">
 </head>
 <body>
     <style type="text/css">
@@ -34,6 +36,13 @@
         input:focus {
             background-color: #696969;
         }
+        div.foot{
+          color:#696969;
+          position: absolute;
+          bottom: 10px;
+          margin-left: 20px;
+          font-size: 8px;
+        }
     </style>
     <div id="app">
         <div class="ui fixed inverted menu">
@@ -49,7 +58,9 @@
                     {%if not articals%}
                     <div class="card">
                         <div class=" ui stacked padded segment">
-                            <img src="/static/images/ed.jpg" />
+                            <div style="width:100%;height:auto;">
+                            <img src="https://notepic-1259769191.cos.ap-shanghai.myqcloud.com/webpic.jpg" />
+                          </div>
                             <p>暂时没有内容哦</p>
                         </div>
                     </div>
@@ -95,8 +106,12 @@
             </div>
             <div class="ui padded segment inverted"style="color:#E0E0E0">
             <div> 1，本站为个人读书笔记应用，专为纸质书阅读者提供笔记管理服务，记录形式均为纯文本，图片信息可使用配套小程序进行编辑转换。</div><br>
-            <div> 2，本站为非盈利非商业性质，禁止散播与本站主旨无关信息。</div><br>
-            <div> 3，根据服务器因素本站将不定期关闭注册。</div>
+            <div> 2，本站为非盈利非商业性质，禁止散播与本站主旨无关信息,若发现不良信息请及时联系站长删除。</div><br>
+            <div> 3，测试阶段服务器带宽较小，如遇关闭注册可联系站长发放邀请码。</div>
+            </div>
+            <div class="foot" >
+              <p>备案号：渝ICP备19012541号</p>
+              <p>站长邮箱：dk_dante@qq.com</p>
             </div>
         </div>
   <script>

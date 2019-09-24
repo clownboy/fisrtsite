@@ -50,11 +50,15 @@ def comment(request):
       com = Comment.objects.create(talk=talk,talker_id=talker_id,artical_id=artical,talktime=datetime.datetime.utcnow().replace(tzinfo=utc))
       com.save
       return JsonResponse({'resp':'ok'})
+@login_required
 def deletenote(request):
     id=request.body
+    user=request.user.id
     if request.method =='POST':
-      Artical.objects.filter(id=id).delete()
+      Artical.objects.filter(id=id,noter=user).delete()
       return JsonResponse({'resp':'ok'})
+
+@login_required
 def account(request):
     if request.method =='POST':
         nickname = request.POST.get('nickname', '')
@@ -67,6 +71,8 @@ def account(request):
             return JsonResponse({'resp':'ok'})
         Userinfo.objects.filter(belong_to=belong_to).update(nickname=nickname)
         return JsonResponse({'nickname':nickname})
+
+@login_required
 def headupload(request):
     if request.method =='POST':
         belong_to = request.user.id
@@ -152,10 +158,11 @@ def onnote(request):
                 content = form.cleaned_data.get("content")
                 if form.cleaned_data.get("notetime") is None:
                    notetime = datetime.datetime.utcnow().replace(tzinfo=utc)
-                else: notetime = form.cleaned_data.get("notetime")
-                new_note = Artical.objects.create(bookname=bookname,author=author,pagenumber=pagenumber,content=content,notetime=notetime,noter_id=noter,noteinfo_id=noter)
-                new_note.save()
-                return redirect('http://127.0.0.1:8000/mynote?page=1')
+                else:
+                   notetime = form.cleaned_data.get("notetime")
+                   new_note = Artical.objects.create(bookname=bookname,author=author,pagenumber=pagenumber,content=content,notetime=notetime,noter_id=noter,noteinfo_id=noter)
+                   new_note.save()
+                   return redirect('/mynote?page=1')
             else:
                 resp=form.errors
                 print(resp)
@@ -166,12 +173,12 @@ def onnote(request):
             pagenumber = form.cleaned_data.get("pagenumber")
             content = form.cleaned_data.get("content")
             Artical.objects.filter(id=noteid).update(bookname=bookname,author=author,pagenumber=pagenumber,content=content)
-            return redirect('http://127.0.0.1:8000/mynote?page=1')
+            return redirect('/mynote?page=1')
         else:
             resp=form.errors
             print(resp)
             return JsonResponse({'resp':resp})
-@csrf_exempt            
+@csrf_exempt
 def register(request):
     if request.method =='POST':
         form = RegisterForm(request.POST)
@@ -200,4 +207,4 @@ def userlogin(request):
             return JsonResponse({'resp':'用户名或密码错误'})
 def userlogout(request):
     logout(request)
-    return redirect('http://127.0.0.1:8000')# Redirect to a success page.
+    return redirect('http://49.235.231.49')# Redirect to a success page.

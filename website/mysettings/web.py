@@ -42,7 +42,7 @@ DATABASES = {
 #     os.path.join(BASE_DIR, 'media'),
 # ]
 WX_APP_SECRET = os.environ['WX_APP_SECRET']
-LOGIN_URL = 'localhost'
+LOGIN_URL = '49.235.231.49'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.qq.com'  # 如果是 163 改成 smtp.163.com
 EMAIL_PORT = 465

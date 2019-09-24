@@ -55,7 +55,9 @@
                     {%if not articals and not papers %}
                     <div class="card">
                         <div class=" ui stacked padded segment">
-                            <img src="/static/images/ed.jpg" />
+                            <div style="width:100%;height:auto;">
+                            <img src="https://notepic-1259769191.cos.ap-shanghai.myqcloud.com/webpic.jpg" />
+                          </div>
                             <p>暂时没有内容哦</p>
                         </div>
                     </div>
@@ -130,7 +132,7 @@
                     {% endif %}
                 </div>
 
-                <div class="five wide column">
+                <div class="five wide column" >
                     <div class="copypage" v-if="copypage.show">
                         <div class="ui raised  segment" method="post" action="/onnote">
                             <a class="ui black right ribbon label" v-on:click="noteCopy()"> <i class="close icon"></i>
