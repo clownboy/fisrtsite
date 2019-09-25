@@ -135,7 +135,7 @@
           onSubmit(){
             this.errormsg=''
             var formData = new FormData()
-            url='https://49.235.231.49/register'
+            url='https://brokenstory.club/register'
             formData.append("username",this.form.username)
             formData.append("password",this.form.password)
             formData.append("repassword",this.form.repassword)
@@ -145,7 +145,7 @@
             if( obj == 'success'){
               console.log(obj)
               alert('注册成功，自动登录');
-              window.location.href="https://49.235.231.49/window"
+              window.location.href="https://brokenstory.club/window"
             }
             else if (obj.hasOwnProperty('username')){
               this.errormsg=obj.username[0];
@@ -161,7 +161,7 @@
           },
           onlogin(){
             var formData = new FormData()
-            url='/userlogin'
+            url='https://brokenstory.club/userlogin'
             formData.append("username",this.form.username)
             formData.append("password",this.form.password)
             this.$http.post(url,formData)
@@ -169,7 +169,7 @@
               obj=data.body.resp
             if( obj == 'success'){
               console.log(obj)
-              window.location.href="https://49.235.231.49/window"
+              window.location.href="https://brokenstory.club/window"
             }
             else{
               this.errormsg = "用户名或密码错误"
