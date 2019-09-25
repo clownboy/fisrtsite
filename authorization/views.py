@@ -15,14 +15,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from firstapp.forms import booknoteform
-
+import datetime
 class ArticalSerializer(serializers.ModelSerializer):
     noter = serializers.SerializerMethodField()
     noteinfo = serializers.SerializerMethodField()
     notetime = serializers.SerializerMethodField()
     def get_notetime(self, obj):
         if obj.notetime:
-           notetime=re.sub(r'T|(\.\d{6})|\+\d{2}:\d{2}$'," ",str(obj.notetime))
+           notetime = obj.notetime + datetime.timedelta(hours=8)
+           notetime = datetime.datetime.strftime(notetime,'%Y-%m-%d %H:%M:%S')
            return notetime
     def get_noter(self, obj):
         if obj.noter:
@@ -50,7 +51,8 @@ class MynoteSerializer(serializers.ModelSerializer):
     notetime = serializers.SerializerMethodField()
     def get_notetime(self, obj):
         if obj.notetime:
-           notetime=re.sub(r'T|(\.\d{6})|\+\d{2}:\d{2}$'," ",str(obj.notetime))
+           notetime = obj.notetime + datetime.timedelta(hours=8)
+           notetime = datetime.datetime.strftime(notetime,'%Y-%m-%d %H:%M:%S')
            return notetime
     def get_noter(self, obj):
         if obj.noter.username:

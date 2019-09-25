@@ -6,16 +6,15 @@ from tencentcloud.ocr.v20181119 import ocr_client, models
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
+from django.conf import settings
 @csrf_exempt
 @api_view(['POST'])
 def noteonline(request):
     if request.method =='POST':
         notepic = request.GET['note']
         picurl = 'https://notepic-1259769191.cos.ap-shanghai.myqcloud.com/'+notepic
-        print(notepic)
         try:
-            cred = credential.Credential(WX_OCR_SECRET_ID,WX_OCR_SECRET_KEY)
+            cred = credential.Credential(settings.WX_OCR_SECRET_ID,settings.WX_OCR_SECRET_KEY)
             httpProfile = HttpProfile()
             httpProfile.endpoint = "ocr.tencentcloudapi.com"
             clientProfile = ClientProfile()
