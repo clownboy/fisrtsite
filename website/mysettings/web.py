@@ -41,6 +41,8 @@ DATABASES = {
 #     os.path.join(BASE_DIR, 'static'),
 #     os.path.join(BASE_DIR, 'media'),
 # ]
+WX_OCR_SECRET_ID = os.environ['WX_OCR_SECRET_ID']
+WX_OCR_SECRET_KEY = os.environ['WX_OCR_SECRET_KEY']
 WX_APP_SECRET = os.environ['WX_APP_SECRET']
 LOGIN_URL = '49.235.231.49'
 EMAIL_USE_SSL = True

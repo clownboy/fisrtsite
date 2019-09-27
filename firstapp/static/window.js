@@ -66,7 +66,6 @@ var vm = new Vue({
                   'X-CSRFToken': this.getCookie('csrftoken')
               }
           }).then(function(res){
-            console.log(res.body.error)
                  if (res.body.error){
                   alert('提交失败，该邮箱已被使用');
                 }else{

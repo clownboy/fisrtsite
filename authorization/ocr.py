@@ -27,7 +27,6 @@ def noteonline(request):
             content=""
             for i in resp:
               content=content+str(i.DetectedText)
-            print(content)
             return  JsonResponse(data=content,safe=False)
         except TencentCloudSDKException as err:
             return  JsonResponse(data=err.to_json_string(),safe=False)
